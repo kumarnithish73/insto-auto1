@@ -19,7 +19,7 @@ import com.anz.sample.springbootweb.services.AccountService;
 import com.anz.sample.springbootweb.services.TransactionService;
 
 @RestController
-@RequestMapping("/accounts")
+
 @Api(value = "wholesaleaccount", description = "Operations pertaining to Whole sale Accounts and transactions")
 
 public class AccountDetailsController {
