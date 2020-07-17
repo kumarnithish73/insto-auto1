@@ -11,12 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import com.anz.sample.springbootweb.exceptions.AccountDetailsNotFoundException;
 import com.anz.sample.springbootweb.models.Account;
 import com.anz.sample.springbootweb.models.Transactions;
 import com.anz.sample.springbootweb.services.AccountService;
 import com.anz.sample.springbootweb.services.TransactionService;
+
 
 @RestController
 
@@ -29,15 +32,29 @@ public class AccountDetailsController {
 	@Autowired
 	TransactionService transactionService;
 
+	@ApiOperation(value = "View a list of Accounts", response = Iterable.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved list"),
+			@ApiResponse(code = 404, message = "Details not found") })
+	
 	@RequestMapping(value = "/list", method = RequestMethod.GET, produces = "application/json")
 	public List<Account> fetchAccountDetails(Model model) {
-		return accountService.fetchAccountDetails();
-
+		List<Account> accounts = accountService.fetchAccountDetails();
+		if (CollectionUtils.isEmpty(accounts)) {
+			throw new AccountDetailsNotFoundException("No accounts found");
+		}
+		return accounts;
 	}
 
+	@ApiOperation(value = "View list of transactions performed", response = Iterable.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved list"),
+			@ApiResponse(code = 404, message = "Details not found") })
+	
 	@RequestMapping(value = "/accountNumber/{accountNumber}", method = RequestMethod.GET, produces = "application/json")
 	public List<Transactions> fetchTransactionsList(@PathVariable Integer accountNumber, Model model) {
-		return transactionService.fetchTransactions(accountNumber);
-
+		List<Transactions> transactions = transactionService.fetchTransactions(accountNumber);
+		if (CollectionUtils.isEmpty(transactions)) {
+			throw new AccountDetailsNotFoundException("Account number not found");
+		}
+		return transactions;
 	}
 }
