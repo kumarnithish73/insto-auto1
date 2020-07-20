@@ -1,20 +1,18 @@
 package com.anz.sample.springbootweb.models;
 import java.sql.Date;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "account")
 public class Account {
 	@Id
-	@Column
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", updatable = false, nullable = false)
 	private int id;
 	@Column
 	private Integer accountNumber;
@@ -28,6 +26,20 @@ public class Account {
 	private String currency;
 	@Column
 	private Double accountBalance;
+	
+	public Account(){
+		super();
+	}
+	public Account( Integer accountNumber, String accountName, String accountType, Date balanceDate,
+			String currency, Double accountBalance) {
+		super();
+		this.accountNumber = accountNumber;
+		this.accountName = accountName;
+		this.accountType = accountType;
+		this.balanceDate = balanceDate;
+		this.currency = currency;
+		this.accountBalance = accountBalance;
+	}
 
 	public int getId() {
 		return id;

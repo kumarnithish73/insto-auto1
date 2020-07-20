@@ -2,22 +2,22 @@ package com.anz.sample.springbootweb.models;
 
 import java.sql.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="transaction")
+@Table(name = "transaction")
 public class Transactions {
-	
+
 	@Id
-	@Column
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", insertable= false, updatable=false)
 	private int id;
-	@Column
+	
 	private Double debitAmount;
 	@Column
 	private Double creditAmount;
@@ -26,12 +26,27 @@ public class Transactions {
 	@Column
 	private Date transactionNarrative;
 	@Column
-	private Integer  accountNumber;
+	private Integer accountNumber;
 	@Column
-	private String  accountName;
+	private String accountName;
 	@Column
-	private String  currency;
-	
+	private String currency;
+
+	public Transactions() {
+		super();
+	}
+	public Transactions(Double debitAmount, Double creditAmount, String transactionType, Date transactionNarrative,
+			Integer accountNumber, String accountName, String currency) {
+		super();
+		this.debitAmount = debitAmount;
+		this.creditAmount = creditAmount;
+		this.transactionType = transactionType;
+		this.transactionNarrative = transactionNarrative;
+		this.accountNumber = accountNumber;
+		this.accountName = accountName;
+		this.currency = currency;
+	}
+
 	public Integer getAccountNumber() {
 		return accountNumber;
 	}
@@ -101,7 +116,5 @@ public class Transactions {
 	 * 
 	 * public void setAccount(Account account) { this.account = account; }
 	 */
-	
-	
-	
+
 }
